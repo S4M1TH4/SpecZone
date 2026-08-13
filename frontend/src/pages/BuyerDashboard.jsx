@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { LayoutDashboard, ShoppingBag, Heart, Wrench, Settings } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Heart, Wrench, Settings, Menu, X } from 'lucide-react';
 
 const BuyerDashboard = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleTab = (tab) => {
+    setActiveTab(tab);
+    setSidebarOpen(false);
+  };
 
   useEffect(() => {
     if (user && user.role === 'buyer') {
@@ -33,21 +39,30 @@ const BuyerDashboard = () => {
 
   return (
     <div className="dashboard-layout">
+      {/* Mobile drawer overlay (below navbar, mobile only) */}
+      {sidebarOpen && (
+        <div
+          className="dashboard-sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="dashboard-sidebar">
+      <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <h3 style={{ marginBottom: '2rem', paddingLeft: '1rem', color: 'var(--text-secondary)' }}>Buyer Panel</h3>
         <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: '0 1rem' }}>
           <button 
             className={`btn ${activeTab === 'overview' ? 'btn-primary' : 'btn-outline'}`}
             style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '0.8rem', justifyContent: 'flex-start', padding: '0.8rem 1rem', border: activeTab !== 'overview' ? 'none' : '' }}
-            onClick={() => setActiveTab('overview')}
+            onClick={() => handleTab('overview')}
           >
             <LayoutDashboard size={20} /> Overview
           </button>
           <button 
             className={`btn ${activeTab === 'orders' ? 'btn-primary' : 'btn-outline'}`}
             style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '0.8rem', justifyContent: 'flex-start', padding: '0.8rem 1rem', border: activeTab !== 'orders' ? 'none' : '' }}
-            onClick={() => setActiveTab('orders')}
+            onClick={() => handleTab('orders')}
           >
             <ShoppingBag size={20} /> My Orders
           </button>
@@ -59,7 +74,19 @@ const BuyerDashboard = () => {
 
       {/* Main Content */}
       <main className="dashboard-content">
-        
+        {/* Mobile top bar (below navbar, mobile only) */}
+        <div className="dashboard-mobile-header">
+          <button
+            className="dashboard-hamburger"
+            aria-label={sidebarOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={sidebarOpen}
+            onClick={() => setSidebarOpen((o) => !o)}
+          >
+            {sidebarOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+          <span className="dashboard-mobile-title">Buyer Dashboard</span>
+        </div>
+
         {activeTab === 'overview' && (
           <div>
             <h2 style={{ fontSize: '2rem', marginBottom: '2rem' }}>Welcome back, {user?.first_name}!</h2>

@@ -331,6 +331,93 @@ a:hover {
   font-size: 0.9rem;
 }
 
+/* Dashboard mobile top bar (hidden on desktop/tablet) */
+.dashboard-mobile-header {
+  display: none;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-hamburger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  color: var(--text-primary);
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.dashboard-hamburger:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+}
+
+.dashboard-mobile-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Buyer footer offset (matches desktop sidebar width) */
+.buyer-footer-offset {
+  margin-left: 260px;
+}
+
+/* Mobile dashboard behavior: collapse fixed sidebar into an off-canvas drawer.
+   The layout reclaims the sidebar's width, the hamburger lives inside the
+   dashboard content (below the fixed navbar) and the drawer never covers it. */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .dashboard-content {
+    margin-left: 0;
+    padding: 1.25rem;
+  }
+
+  .dashboard-sidebar {
+    top: 90px;
+    left: 0;
+    width: 260px;
+    height: calc(100vh - 90px);
+    transform: translateX(-100%);
+    transition: transform var(--transition-normal);
+    z-index: 900;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
+  }
+
+  .dashboard-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .dashboard-mobile-header {
+    display: flex;
+  }
+
+  .dashboard-sidebar-overlay {
+    position: fixed;
+    top: 90px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 800;
+  }
+
+  .buyer-footer-offset {
+    margin-left: 0;
+  }
+}
+
 /* Footer Styles */
 .footer {
   background-color: var(--bg-secondary);

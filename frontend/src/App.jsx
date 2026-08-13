@@ -51,7 +51,7 @@ const AppLayout = () => {
         </Routes>
       </div>
       {(!isSellerRoute && !isAdminRoute) && (
-        <div style={isBuyerRoute ? { marginLeft: '260px' } : {}}>
+        <div className={isBuyerRoute ? 'buyer-footer-offset' : ''}>
           <Footer />
         </div>
       )}
