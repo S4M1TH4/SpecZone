@@ -10,6 +10,7 @@ const Shop = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   useEffect(() => {
     // Fetch products
@@ -37,10 +38,91 @@ const Shop = () => {
       .catch(err => console.error("Error fetching categories:", err));
   }, []);
   return (
-    <div className="container">
+    <div className="container shop-page">
+      <style>{`
+        .shop-page .filters-toggle { display: none; }
+
+        .shop-page .shop-sort {
+          appearance: none;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          background-color: rgba(0, 0, 0, 0.2);
+          color: var(--text-primary);
+          border: 1px solid var(--border-color);
+          border-radius: var(--border-radius-sm);
+          padding: 0.8rem 2.5rem 0.8rem 1rem;
+          font-family: inherit;
+          font-size: 0.95rem;
+          cursor: pointer;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239494a0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 1rem center;
+          transition: all var(--transition-fast);
+        }
+
+        .shop-page .shop-sort:hover {
+          border-color: var(--border-highlight);
+        }
+
+        .shop-page .shop-sort:focus {
+          outline: none;
+          border-color: var(--accent-primary);
+          box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
+        }
+
+        .shop-page .shop-sort option {
+          background-color: var(--bg-secondary);
+          color: var(--text-primary);
+        }
+
+        @media (max-width: 900px) {
+          .shop-page .shop-sidebar {
+            display: none;
+            width: 100%;
+            order: 2;
+          }
+          .shop-page .shop-sidebar.filters-open {
+            display: block;
+          }
+          .shop-page .filters-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            order: 1;
+          }
+          .shop-page .shop-main {
+            order: 3;
+          }
+          .shop-page .shop-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 1rem;
+          }
+          .shop-page .shop-header-controls {
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+          }
+          .shop-page .shop-search {
+            width: 100%;
+          }
+          .shop-page .shop-search-input {
+            width: 100%;
+          }
+          .shop-page .shop-sort {
+            width: 100%;
+          }
+        }
+      `}</style>
+
       <div className="shop-layout">
         {/* Sidebar Filters */}
-        <aside className="shop-sidebar glass-panel" style={{ padding: '2rem', height: 'fit-content' }}>
+        <aside
+          id="filter-panel"
+          className={`shop-sidebar glass-panel${filtersOpen ? ' filters-open' : ''}`}
+          style={{ padding: '2rem', height: 'fit-content' }}
+        >
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem' }}>
             <Filter size={20} />
             <h3 style={{ margin: 0 }}>Filters</h3>
@@ -63,19 +145,30 @@ const Shop = () => {
             <label className="filter-label"><input type="radio" name="price" /> Over Rs. 200,000</label>
           </div>
           
-          <button className="btn btn-primary" style={{ width: '100%' }}>Apply Filters</button>
+           <button className="btn btn-primary" style={{ width: '100%' }}>Apply Filters</button>
         </aside>
+
+        <button
+          type="button"
+          className="btn btn-outline filters-toggle"
+          aria-expanded={filtersOpen}
+          aria-controls="filter-panel"
+          onClick={() => setFiltersOpen(prev => !prev)}
+        >
+          <Filter size={18} />
+          Filters
+        </button>
 
         {/* Main Content */}
         <main className="shop-main">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+          <div className="shop-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
             <h2 style={{ margin: 0 }}>All Components</h2>
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              <div style={{ position: 'relative' }}>
+            <div className="shop-header-controls" style={{ display: 'flex', gap: '1rem' }}>
+              <div className="shop-search" style={{ position: 'relative' }}>
                 <Search size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
-                <input type="text" placeholder="Search..." className="form-control" style={{ paddingLeft: '2.5rem', width: '250px' }} />
+                <input type="text" placeholder="Search..." className="form-control shop-search-input" style={{ paddingLeft: '2.5rem' }} />
               </div>
-              <select className="form-control" style={{ width: 'auto' }}>
+              <select className="form-control shop-sort">
                 <option>Sort by: Popularity</option>
                 <option>Price: Low to High</option>
                 <option>Price: High to Low</option>
