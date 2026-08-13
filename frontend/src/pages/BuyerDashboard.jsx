@@ -66,14 +66,42 @@ const BuyerDashboard = () => {
             
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
               <div className="glass-panel stat-card">
-                <div className="stat-icon"><ShoppingBag size={24} /></div>
+                <div
+                  className="stat-icon"
+                  style={{
+                    flexShrink: 0,
+                    width: '48px',
+                    height: '48px',
+                    minWidth: '48px',
+                    minHeight: '48px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <ShoppingBag size={24} />
+                </div>
                 <div className="stat-info">
                   <h3>{orders.length}</h3>
                   <p>Total Orders</p>
                 </div>
               </div>
               <div className="glass-panel stat-card">
-                <div className="stat-icon"><Wrench size={24} /></div>
+                <div
+                  className="stat-icon"
+                  style={{
+                    flexShrink: 0,
+                    width: '48px',
+                    height: '48px',
+                    minWidth: '48px',
+                    minHeight: '48px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Wrench size={24} />
+                </div>
                 <div className="stat-info">
                   <h3>0</h3>
                   <p>Saved PC Builds</p>
