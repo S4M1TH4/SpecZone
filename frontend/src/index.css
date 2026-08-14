@@ -674,3 +674,59 @@ a:hover {
     padding: 0.75rem 1rem !important;
   }
 }
+
+/* Checkout page — responsive layout.
+   Desktop/tablet keeps the two-column (1fr 400px) arrangement; on mobile the
+   columns stack so the Order Summary always sits below Shipping Details.
+   Scoped to dedicated classes so the global layout stays untouched. */
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 2rem;
+}
+
+.checkout-shipping {
+  padding: 2rem;
+}
+
+.checkout-city-postal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .checkout-layout {
+    grid-template-columns: 1fr;
+  }
+  .checkout-shipping {
+    padding: 1.25rem;
+  }
+  .checkout-city-postal {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Checkout success confirmation screen — mobile only.
+   Scoped to .checkout-success so it never affects other .container
+   instances, the checkout form, order summary, or any other component. */
+@media (max-width: 768px) {
+  .checkout-success {
+    padding: 2.5rem 1rem !important;
+  }
+  .checkout-success-icon {
+    width: 60px;
+    height: 60px;
+  }
+  .checkout-success-heading {
+    font-size: 1.85rem !important;
+  }
+  .checkout-success-text {
+    font-size: 0.98rem !important;
+    margin-bottom: 1.75rem !important;
+    overflow-wrap: break-word;
+  }
+  .checkout-success-btn {
+    padding: 0.7rem 1.2rem !important;
+  }
+}
