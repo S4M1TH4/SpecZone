@@ -16,7 +16,7 @@ const Home = () => {
             <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', marginBottom: '2rem', padding: '0 2rem' }}>
               SpecZone is the ultimate marketplace for PC enthusiasts. Discover premium components, compare benchmarks, and build your dream rig today.
             </p>
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+            <div className="hero-actions" style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
               <Link to="/shop" className="btn btn-primary" style={{ fontSize: '1.1rem', padding: '1rem 2rem' }}>Shop Now</Link>
               <Link to="/builder" className="btn btn-outline" style={{ fontSize: '1.1rem', padding: '1rem 2rem' }}>PC Builder</Link>
             </div>
