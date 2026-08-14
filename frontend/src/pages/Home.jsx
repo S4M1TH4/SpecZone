@@ -6,10 +6,10 @@ const Home = () => {
   return (
     <div>
       {/* Hero Section */}
-      <section className="hero-section">
+      <section className="hero-section" style={{ padding: '20px 0 40px 0' }}>
         <div className="hero-bg"></div>
         <div className="container">
-          <div className="glass-panel" style={{ padding: '4rem 2rem', maxWidth: '800px', margin: '0 auto' }}>
+          <div className="glass-panel" style={{ padding: '2rem 1rem', maxWidth: '800px', margin: '0 auto' }}>
             <h1 style={{ fontSize: '4rem', marginBottom: '1rem', lineHeight: '1.1' }}>
               Your Vision. <br/><span className="text-gradient">Your Build.</span>
             </h1>
