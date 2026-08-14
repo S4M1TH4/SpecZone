@@ -730,3 +730,22 @@ a:hover {
     padding: 0.7rem 1.2rem !important;
   }
 }
+
+.cart-layout {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 4rem;
+}
+
+@media (max-width: 856px) {
+  .cart-layout {
+    grid-template-columns: 1fr;
+  }
+  .cart-item {
+    flex-wrap: wrap;
+  }
+  .cart-item-total {
+    flex-basis: 100%;
+    text-align: left;
+  }
+}
