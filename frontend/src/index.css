@@ -307,6 +307,26 @@ a:hover {
   padding: 2rem;
 }
 
+/* Admin Dashboard layout.
+   On desktop it keeps a 250px + 1fr grid. The sidebar positioning lives here
+   (instead of inline) so media queries can collapse it into an off-canvas drawer.
+   We neutralize the generic fixed-sidebar base rule (.dashboard-sidebar) because
+   the admin uses a sticky sidebar inside its own grid. */
+.admin-dashboard-layout {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 2rem;
+  padding: 2rem 1rem;
+}
+
+.admin-dashboard-layout .dashboard-sidebar {
+  position: sticky;
+  top: 80px;
+  width: auto;
+  height: calc(100vh - 120px);
+  overflow: visible;
+}
+
 /* Stat Cards */
 .stat-card {
   padding: 1.5rem;
@@ -424,6 +444,58 @@ a:hover {
 
   .buyer-footer-offset {
     margin-left: 0;
+  }
+}
+
+/* Admin Dashboard responsive behavior.
+   Collapse the sidebar into an off-canvas drawer at <=1024px (tablet), well before
+   the 250px column would cramp the seven-column User Management table. The container
+   drops to a single column so the main content reclaims the sidebar's width; the
+   sidebar is taken out of the grid flow and slides in only when .open. */
+@media (max-width: 1024px) {
+  .admin-dashboard-layout {
+    display: block;
+    padding: 1.5rem 1rem;
+  }
+
+  .admin-dashboard-layout .dashboard-sidebar {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 260px;
+    height: calc(100vh - 80px);
+    transform: translateX(-100%);
+    transition: transform var(--transition-normal);
+    z-index: 900;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+  }
+
+  .admin-dashboard-layout .dashboard-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .admin-dashboard-layout .dashboard-mobile-header {
+    display: flex;
+  }
+
+  .admin-dashboard-layout .dashboard-sidebar-overlay {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 800;
+  }
+}
+
+/* Mobile: tighten padding/gaps so the content fits comfortably. */
+@media (max-width: 768px) {
+  .admin-dashboard-layout {
+    padding: 1rem 0.75rem;
   }
 }
 

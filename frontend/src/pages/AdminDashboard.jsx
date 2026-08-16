@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Users, ShoppingBag, Package, LayoutDashboard, Trash2, LogOut, Star, AlertTriangle, ChevronDown } from 'lucide-react';
+import { Users, ShoppingBag, Package, LayoutDashboard, Trash2, LogOut, Star, AlertTriangle, ChevronDown, Menu, X } from 'lucide-react';
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   
   const [stats, setStats] = useState({
     total_buyers: 0,
@@ -81,10 +82,19 @@ const AdminDashboard = () => {
   if (loading) return <div className="container" style={{ padding: '4rem 1rem', textAlign: 'center' }}>Loading Admin Dashboard...</div>;
 
   return (
-    <div className="container dashboard-container" style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '2rem', padding: '2rem 1rem' }}>
+    <div className="container dashboard-container admin-dashboard-layout">
       
+      {/* Mobile drawer overlay (tablet/mobile only) */}
+      {sidebarOpen && (
+        <div
+          className="dashboard-sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="dashboard-sidebar glass-panel" style={{ padding: '2rem 1rem', height: 'calc(100vh - 120px)', position: 'sticky', top: '80px' }}>
+      <aside className={`dashboard-sidebar glass-panel ${sidebarOpen ? 'open' : ''}`} style={{ padding: '2rem 1rem' }}>
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))', margin: '0 auto 1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', fontWeight: 'bold' }}>
             {user?.first_name?.charAt(0)}
@@ -97,15 +107,15 @@ const AdminDashboard = () => {
           <button 
             className={`btn ${activeTab === 'overview' ? 'btn-primary' : 'btn-outline'}`}
             style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '0.8rem', justifyContent: 'flex-start', padding: '0.8rem 1rem', border: activeTab !== 'overview' ? 'none' : '' }}
-            onClick={() => setActiveTab('overview')}
-          >
+            onClick={() => { setActiveTab('overview'); setSidebarOpen(false); }}
+           >
             <LayoutDashboard size={20} /> Overview
           </button>
           <button 
             className={`btn ${activeTab === 'users' ? 'btn-primary' : 'btn-outline'}`}
             style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '0.8rem', justifyContent: 'flex-start', padding: '0.8rem 1rem', border: activeTab !== 'users' ? 'none' : '' }}
-            onClick={() => setActiveTab('users')}
-          >
+            onClick={() => { setActiveTab('users'); setSidebarOpen(false); }}
+           >
             <Users size={20} /> Manage Users
           </button>
         </nav>
@@ -117,6 +127,7 @@ const AdminDashboard = () => {
             onClick={() => {
               logout();
               navigate('/');
+              setSidebarOpen(false);
             }}
           >
             <LogOut size={20} /> Logout
@@ -126,7 +137,19 @@ const AdminDashboard = () => {
 
       {/* Main Content */}
       <main>
-        
+        {/* Mobile/tablet top bar with hamburger (hidden on desktop) */}
+        <div className="dashboard-mobile-header">
+          <button
+            className="dashboard-hamburger"
+            aria-label={sidebarOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={sidebarOpen}
+            onClick={() => setSidebarOpen((o) => !o)}
+          >
+            {sidebarOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+          <span className="dashboard-mobile-title">Admin Dashboard</span>
+        </div>
+
         {activeTab === 'overview' && (
           <div>
             <h2 style={{ marginBottom: '2rem' }}>Platform Overview</h2>
@@ -317,7 +340,8 @@ const AdminDashboard = () => {
             </div>
             
             <div className="glass-panel" style={{ overflow: 'hidden' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <div style={{ overflowX: 'auto', width: '100%' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '760px' }}>
                 <thead>
                   <tr style={{ background: 'rgba(255,255,255,0.05)', textAlign: 'left' }}>
                     <th style={{ padding: '1.2rem 1rem' }}>ID</th>
@@ -393,6 +417,7 @@ const AdminDashboard = () => {
                   ))}
                 </tbody>
               </table>
+              </div>
               {users.filter(u => {
                 if (filterRole === 'all') return true;
                 if (filterRole === 'critical_seller') return u.role === 'seller' && u.avg_rating !== null && u.avg_rating <= 4;
