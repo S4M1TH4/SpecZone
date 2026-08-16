@@ -830,3 +830,118 @@ a:hover {
     text-align: left;
   }
 }
+
+/* Seller Dashboard responsive behavior.
+   Desktop/tablet inherit the global fixed 260px sidebar + 260px content offset
+   (via .dashboard-sidebar / .dashboard-content). The sidebar is intentionally
+   NOT collapsed at tablet (769px-1024px) because there is enough room for it.
+   Only at <=768px does the sidebar become an off-canvas drawer controlled by
+   .open, the content reclaims the full width, a hamburger header appears and an
+   overlay closes the drawer. Everything is scoped to seller-specific classes so
+   the Admin/Buyer dashboards are never affected. */
+.seller-dashboard-sidebar {
+  height: 100vh;
+}
+
+.seller-mobile-header {
+  display: none;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.seller-hamburger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  color: var(--text-primary);
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.seller-hamburger:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+}
+
+.seller-mobile-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Two-column form row (Price / Stock) used on the Add Product page. */
+.seller-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Main analytics layout (Revenue Trend / Top Selling Products). */
+.analytics-main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* Tablet: keep the sidebar visible, just tighten content spacing. */
+@media (max-width: 1024px) {
+  .seller-dashboard-content {
+    padding: 1.5rem;
+  }
+}
+
+/* Mobile: sidebar becomes a full-height off-canvas drawer. */
+@media (max-width: 768px) {
+  .seller-dashboard-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform var(--transition-normal);
+    z-index: 900;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
+  }
+
+  .seller-dashboard-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .seller-dashboard-content {
+    margin-left: 0;
+    padding: 1.25rem;
+  }
+
+  .seller-mobile-header {
+    display: flex;
+  }
+
+  .seller-dashboard-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 800;
+  }
+
+  /* Stack the Price/Stock and the analytics columns on narrow screens. */
+  .seller-two-col {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics-main-grid {
+    grid-template-columns: 1fr;
+  }
+}

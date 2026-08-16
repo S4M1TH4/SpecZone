@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Save, Image as ImageIcon } from 'lucide-react';
+import { Save, Image as ImageIcon, Menu } from 'lucide-react';
 import SellerSidebar from '../components/SellerSidebar';
 
 const AddProduct = () => {
@@ -9,6 +9,7 @@ const AddProduct = () => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [status, setStatus] = useState({ type: '', message: '' });
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -84,8 +85,16 @@ const AddProduct = () => {
 
   return (
     <div className="dashboard-layout" style={{ minHeight: '100vh' }}>
-      <SellerSidebar />
-      <div className="dashboard-content">
+      <SellerSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      {sidebarOpen && <div className="seller-dashboard-overlay" onClick={() => setSidebarOpen(false)} />}
+      <div className="dashboard-content seller-dashboard-content">
+        <div className="seller-mobile-header">
+          <button className="seller-hamburger" onClick={() => setSidebarOpen(true)} aria-label="Open menu">
+            <Menu size={24} />
+          </button>
+          <span className="seller-mobile-title">Add Product</span>
+        </div>
+
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
           <h2 style={{ marginBottom: '2rem' }}>Add New Product</h2>
         
@@ -102,7 +111,7 @@ const AddProduct = () => {
               <input type="text" name="name" className="form-control" value={formData.name} onChange={handleChange} required />
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div className="seller-two-col">
               <div className="form-group">
                 <label className="form-label">Price (Rs.) *</label>
                 <input type="number" name="price" className="form-control" value={formData.price} onChange={handleChange} required min="0" step="0.01" />

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import SellerSidebar from '../components/SellerSidebar';
-import { BarChart2, TrendingUp, Package, Award } from 'lucide-react';
+import { BarChart2, TrendingUp, Package, Award, Menu } from 'lucide-react';
 
 const SellerAnalytics = () => {
   const { user } = useAuth();
@@ -15,6 +15,7 @@ const SellerAnalytics = () => {
     top_products: []
   });
   const [loading, setLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (!user || user.role !== 'seller') {
@@ -46,8 +47,16 @@ const SellerAnalytics = () => {
 
   return (
     <div className="dashboard-layout" style={{ minHeight: '100vh' }}>
-      <SellerSidebar />
-      <main className="dashboard-content">
+      <SellerSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      {sidebarOpen && <div className="seller-dashboard-overlay" onClick={() => setSidebarOpen(false)} />}
+      <main className="dashboard-content seller-dashboard-content">
+        <div className="seller-mobile-header">
+          <button className="seller-hamburger" onClick={() => setSidebarOpen(true)} aria-label="Open menu">
+            <Menu size={24} />
+          </button>
+          <span className="seller-mobile-title">Sales Analytics</span>
+        </div>
+
         <h2 style={{ fontSize: '2rem', marginBottom: '2rem' }}>Sales Analytics</h2>
         
         {loading ? (
@@ -79,7 +88,7 @@ const SellerAnalytics = () => {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem', alignItems: 'start' }}>
+            <div className="analytics-main-grid">
               
               {/* Bar Chart Section */}
               <div className="glass-panel" style={{ padding: '2rem' }}>
