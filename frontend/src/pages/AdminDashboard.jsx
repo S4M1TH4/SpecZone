@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Users, ShoppingBag, Package, LayoutDashboard, Trash2, LogOut, Star, AlertTriangle } from 'lucide-react';
+import { Users, ShoppingBag, Package, LayoutDashboard, Trash2, LogOut, Star, AlertTriangle, ChevronDown } from 'lucide-react';
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
@@ -18,6 +18,10 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterRole, setFilterRole] = useState('all');
+
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filterFocused, setFilterFocused] = useState(false);
+  const [filterHovered, setFilterHovered] = useState(false);
 
   useEffect(() => {
     if (!user || user.role !== 'admin') {
@@ -160,17 +164,156 @@ const AdminDashboard = () => {
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
               <h2 style={{ margin: 0 }}>User Management</h2>
-              <select 
-                className="form-control" 
-                style={{ width: '250px' }} 
-                value={filterRole} 
-                onChange={(e) => setFilterRole(e.target.value)}
+              <div
+                style={{
+                  position: 'relative',
+                  width: '250px',
+                  zIndex: filterOpen ? 1000 : 'auto',
+                }}
               >
-                <option value="all">All Users</option>
-                <option value="buyer">Buyers Only</option>
-                <option value="seller">Sellers Only</option>
-                <option value="critical_seller">Critical Sellers (Rating ≤ 4)</option>
-              </select>
+                {/* Dropdown Trigger */}
+                <button
+                  type="button"
+                  aria-haspopup="listbox"
+                  aria-expanded={filterOpen}
+                  className="form-control"
+                  onMouseEnter={() => setFilterHovered(true)}
+                  onMouseLeave={() => setFilterHovered(false)}
+                  onFocus={() => setFilterFocused(true)}
+                  onBlur={() => {
+                    if (!filterOpen) {
+                      setFilterFocused(false);
+                    }
+                  }}
+                  onClick={() => {
+                    setFilterOpen(prev => !prev);
+                    setFilterFocused(true);
+                  }}
+                  style={{
+                    width: '100%',
+                    minHeight: '42px',
+                    padding: '0.75rem 2.75rem 0.75rem 1rem',
+                    backgroundColor: 'var(--bg-secondary)',
+                    color: 'var(--text-primary)',
+                    cursor: 'pointer',
+                    fontSize: '0.95rem',
+                    textAlign: 'left',
+                    position: 'relative',
+                    border: `1px solid ${
+                      filterFocused
+                        ? 'var(--accent-primary)'
+                        : filterHovered
+                          ? 'var(--border-highlight)'
+                          : 'var(--border-color)'
+                    }`,
+                    transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+                  }}
+                >
+                  <span>
+                    {filterRole === 'all'
+                      ? 'All Users'
+                      : filterRole === 'buyer'
+                        ? 'Buyers Only'
+                        : filterRole === 'seller'
+                          ? 'Sellers Only'
+                          : 'Critical Sellers (Rating ≤ 4)'}
+                  </span>
+              
+                  <ChevronDown
+                    size={16}
+                    aria-hidden="true"
+                    style={{
+                      position: 'absolute',
+                      right: '1rem',
+                      top: '50%',
+                      transform: `translateY(-50%) rotate(${filterOpen ? 180 : 0}deg)`,
+                      color: 'var(--text-secondary)',
+                      pointerEvents: 'none',
+                      transition: 'transform 0.2s ease',
+                    }}
+                  />
+                </button>
+              
+                {/* React-rendered Dropdown Menu */}
+                {filterOpen && (
+                  <div
+                    role="listbox"
+                    aria-label="Filter users"
+                    style={{
+                      position: 'absolute',
+                      top: 'calc(100% + 0.4rem)',
+                      left: 0,
+                      width: '100%',
+                      backgroundColor: 'var(--bg-secondary)',
+                      border: '1px solid var(--border-color)',
+                      borderRadius: 'var(--border-radius-sm)',
+                      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.35)',
+                      overflow: 'hidden',
+                      zIndex: 1001,
+                    }}
+                  >
+                    {[
+                      { value: 'all', label: 'All Users' },
+                      { value: 'buyer', label: 'Buyers Only' },
+                      { value: 'seller', label: 'Sellers Only' },
+                      {
+                        value: 'critical_seller',
+                        label: 'Critical Sellers (Rating ≤ 4)',
+                      },
+                    ].map(option => {
+                      const isSelected = filterRole === option.value;
+              
+                      return (
+                        <div
+                          key={option.value}
+                          role="option"
+                          aria-selected={isSelected}
+                          onMouseDown={(event) => {
+                            event.preventDefault();
+                            setFilterRole(option.value);
+                            setFilterOpen(false);
+                            setFilterFocused(false);
+                          }}
+                          style={{
+                            padding: '0.8rem 1rem',
+                            backgroundColor: isSelected
+                              ? 'rgba(0, 240, 255, 0.12)'
+                              : 'transparent',
+                            color: isSelected
+                              ? 'var(--accent-primary)'
+                              : 'var(--text-primary)',
+                            cursor: 'pointer',
+                            fontSize: '0.95rem',
+                            transition: 'background-color 0.15s ease, color 0.15s ease',
+                            borderBottom:
+                              option.value !== 'critical_seller'
+                                ? '1px solid var(--border-color)'
+                                : 'none',
+                          }}
+                          onMouseEnter={(event) => {
+                            event.currentTarget.style.backgroundColor =
+                              'rgba(0, 240, 255, 0.1)';
+                            event.currentTarget.style.color =
+                              'var(--accent-primary)';
+                          }}
+                          onMouseLeave={(event) => {
+                            event.currentTarget.style.backgroundColor =
+                              isSelected
+                                ? 'rgba(0, 240, 255, 0.12)'
+                                : 'transparent';
+                            event.currentTarget.style.color =
+                              isSelected
+                                ? 'var(--accent-primary)'
+                                : 'var(--text-primary)';
+                          }}
+                        >
+                          {option.label}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
             
             <div className="glass-panel" style={{ overflow: 'hidden' }}>
