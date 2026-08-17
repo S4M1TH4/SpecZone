@@ -247,6 +247,18 @@ a:hover {
   transition: all var(--transition-fast);
 }
 
+/* Hide browser-native spinner arrows on number inputs */
+.form-control[type="number"]::-webkit-inner-spin-button,
+.form-control[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.form-control[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 .form-control:focus {
   outline: none;
   border-color: var(--accent-primary);
