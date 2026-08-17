@@ -90,7 +90,6 @@ a:hover {
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
-/* Premium Button Styles */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -127,7 +126,6 @@ a:hover {
   box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
 }
 
-/* Dynamic Gradient Text */
 .text-gradient {
   background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
   -webkit-background-clip: text;
@@ -135,7 +133,6 @@ a:hover {
   background-clip: text;
 }
 
-/* Global Container */
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -307,11 +304,6 @@ a:hover {
   padding: 2rem;
 }
 
-/* Admin Dashboard layout.
-   On desktop it keeps a 250px + 1fr grid. The sidebar positioning lives here
-   (instead of inline) so media queries can collapse it into an off-canvas drawer.
-   We neutralize the generic fixed-sidebar base rule (.dashboard-sidebar) because
-   the admin uses a sticky sidebar inside its own grid. */
 .admin-dashboard-layout {
   display: grid;
   grid-template-columns: 250px 1fr;
@@ -327,7 +319,6 @@ a:hover {
   overflow: visible;
 }
 
-/* Stat Cards */
 .stat-card {
   padding: 1.5rem;
   display: flex;
@@ -360,7 +351,6 @@ a:hover {
   font-size: 0.9rem;
 }
 
-/* Dashboard mobile top bar (hidden on desktop/tablet) */
 .dashboard-mobile-header {
   display: none;
   align-items: center;
@@ -395,14 +385,10 @@ a:hover {
   color: var(--text-primary);
 }
 
-/* Buyer footer offset (matches desktop sidebar width) */
 .buyer-footer-offset {
   margin-left: 260px;
 }
 
-/* Mobile dashboard behavior: collapse fixed sidebar into an off-canvas drawer.
-   The layout reclaims the sidebar's width, the hamburger lives inside the
-   dashboard content (below the fixed navbar) and the drawer never covers it. */
 @media (max-width: 768px) {
   body {
     overflow-x: hidden;
@@ -447,11 +433,6 @@ a:hover {
   }
 }
 
-/* Admin Dashboard responsive behavior.
-   Collapse the sidebar into an off-canvas drawer at <=1024px (tablet), well before
-   the 250px column would cramp the seven-column User Management table. The container
-   drops to a single column so the main content reclaims the sidebar's width; the
-   sidebar is taken out of the grid flow and slides in only when .open. */
 @media (max-width: 1024px) {
   .admin-dashboard-layout {
     display: block;
@@ -702,21 +683,12 @@ a:hover {
   }
 }
 
-/* Mobile glass-panel responsiveness.
-   Keep the desktop/tablet appearance untouched; only constrain glass panels
-   so they never exceed their parent and never force horizontal scrolling. */
 @media (max-width: 768px) {
-  /* Conservative, generic rule for every .glass-panel across the app.
-     max-width:100% only constrains (it does not override inline max-width
-     values like the hero's 800px or the modal's 800px) and box-sizing is
-     already border-box globally so padding is included in the width. */
   .glass-panel {
     max-width: 100%;
     box-sizing: border-box;
   }
 
-  /* Collapse the homepage card grids to a single full-width column so the
-     auto-fit minimums (250px/280px) can't overflow narrow viewports. */
   .category-grid,
   .product-grid {
     grid-template-columns: 1fr;
@@ -735,8 +707,6 @@ a:hover {
     gap: 0.5rem;
   }
 
-  /* Hero panel: scale down the desktop-oriented inline sizing so the panel
-     and its content fit naturally on small screens. */
   .hero-section .glass-panel {
     padding: 1.5rem 1rem !important;
   }
@@ -756,10 +726,6 @@ a:hover {
   }
 }
 
-/* Checkout page — responsive layout.
-   Desktop/tablet keeps the two-column (1fr 400px) arrangement; on mobile the
-   columns stack so the Order Summary always sits below Shipping Details.
-   Scoped to dedicated classes so the global layout stays untouched. */
 .checkout-layout {
   display: grid;
   grid-template-columns: 1fr 400px;
@@ -788,9 +754,6 @@ a:hover {
   }
 }
 
-/* Checkout success confirmation screen — mobile only.
-   Scoped to .checkout-success so it never affects other .container
-   instances, the checkout form, order summary, or any other component. */
 @media (max-width: 768px) {
   .checkout-success {
     padding: 2.5rem 1rem !important;
@@ -831,14 +794,78 @@ a:hover {
   }
 }
 
-/* Seller Dashboard responsive behavior.
-   Desktop/tablet inherit the global fixed 260px sidebar + 260px content offset
-   (via .dashboard-sidebar / .dashboard-content). The sidebar is intentionally
-   NOT collapsed at tablet (769px-1024px) because there is enough room for it.
-   Only at <=768px does the sidebar become an off-canvas drawer controlled by
-   .open, the content reclaims the full width, a hamburger header appears and an
-   overlay closes the drawer. Everything is scoped to seller-specific classes so
-   the Admin/Buyer dashboards are never affected. */
+/* Reusable checkbox / radio styling (DO NOT REMOVE THIS COMMENT!!!).
+   Apply via className="speczone-control".*/
+.speczone-control {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  background: rgba(0, 240, 255, 0.08);
+  border: 1px solid rgba(0, 240, 255, 0.55);
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  transition: none;
+}
+
+.speczone-control:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.20);
+}
+
+/* Checkbox: rounded corners */
+.speczone-control[type="checkbox"] {
+  border-radius: 4px;
+}
+
+/* Radio: circular */
+.speczone-control[type="radio"] {
+  border-radius: 50%;
+}
+
+/* Checkbox checked:*/
+.speczone-control[type="checkbox"]:checked {
+  background: #00f0ff;
+  border-color: #00f0ff;
+}
+
+.speczone-control[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: solid #06141a;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Radio checked:*/
+.speczone-control[type="radio"]:checked {
+  background: #00f0ff;
+  border-color: #00f0ff;
+}
+
+.speczone-control[type="radio"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #06141a;
+  transform: translate(-50%, -50%);
+}
+
 .seller-dashboard-sidebar {
   height: 100vh;
 }

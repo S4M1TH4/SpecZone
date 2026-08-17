@@ -132,17 +132,17 @@ const Shop = () => {
             <h4>Categories</h4>
             {categories.map(cat => (
               <label key={cat.id} className="filter-label">
-                <input type="checkbox" value={cat.id} /> {cat.name}
+                <input type="checkbox" value={cat.id} className="speczone-control" /> {cat.name}
               </label>
             ))}
           </div>
 
           <div className="filter-group">
             <h4>Price Range</h4>
-            <label className="filter-label"><input type="radio" name="price" /> Under Rs. 50,000</label>
-            <label className="filter-label"><input type="radio" name="price" /> Rs. 50,000 - 100,000</label>
-            <label className="filter-label"><input type="radio" name="price" /> Rs. 100,000 - 200,000</label>
-            <label className="filter-label"><input type="radio" name="price" /> Over Rs. 200,000</label>
+            <label className="filter-label"><input type="radio" name="price" className="speczone-control" /> Under Rs. 50,000</label>
+            <label className="filter-label"><input type="radio" name="price" className="speczone-control" /> Rs. 50,000 - 100,000</label>
+            <label className="filter-label"><input type="radio" name="price" className="speczone-control" /> Rs. 100,000 - 200,000</label>
+            <label className="filter-label"><input type="radio" name="price" className="speczone-control" /> Over Rs. 200,000</label>
           </div>
 
           <button className="btn btn-primary" style={{ width: '100%' }}>Apply Filters</button>
