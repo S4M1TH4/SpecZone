@@ -67,7 +67,7 @@ const SellerProducts = () => {
             </div>
           ) : (
             <div style={{ overflowX: 'auto', width: '100%' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '760px', textAlign: 'left' }}>
               <thead>
                 <tr style={{ background: 'rgba(255,255,255,0.05)' }}>
                   <th style={{ padding: '1.2rem 1rem' }}>Product</th>
