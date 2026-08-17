@@ -154,13 +154,13 @@ const SellerAnalytics = () => {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     {analytics.top_products.map((prod, index) => (
                       <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', minWidth: 0 }}>
                           <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: index === 0 ? 'var(--warning)' : index === 1 ? '#e2e8f0' : index === 2 ? '#b45309' : 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 'bold', color: index < 3 ? '#000' : '#fff' }}>
                             {index + 1}
                           </div>
-                          <span style={{ fontWeight: 'bold' }}>{prod.name}</span>
+                          <span style={{ fontWeight: 'bold', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{prod.name}</span>
                         </div>
-                        <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                        <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>
                           {prod.sold} sold
                         </span>
                       </div>
