@@ -40,13 +40,32 @@
 }
 
 body {
+  position: relative;
   font-family: 'Outfit', sans-serif;
-  background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background: 
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("img/wallhaven-833q1o.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    
+    filter: blur(10px);
+    transform: scale(1.05);
+
+    z-index: -1;
 }
 
 /* Custom Scrollbar */
